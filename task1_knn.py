@@ -24,11 +24,11 @@ y_np = np.asarray(powerOutPutList,dtype=float)
 forcast_np = np.asarray(forecast,dtype=float)
 
 clf = neighbors.KNeighborsClassifier()
-#clf.fit(x_np, y_np)
+clf.fit(x_np, y_np)
 
 print()
 
-#print(clf.score(x_np, y_np))
+print(clf.score(x_np, y_np))
 
 scatter(x_np, y_np)
 show()
