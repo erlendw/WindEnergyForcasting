@@ -15,6 +15,7 @@ y = list()
 forecast_wind_speed = list()
 forecast_wind_dir = list()
 solution = list()
+dates = list()
 
 for i in range(len(weatherdata)):
     x.append(weatherdata[i][4])
@@ -25,6 +26,8 @@ for i in range(len(forecastdata)):
     forecast_wind_speed.append(forecastdata[i][3])
     forecast_wind_dir.append(float(forecastdata[i][1])+float(forecastdata[i][2]))
     solution.append(solutiondata[i][1])
+    dates.append(solutiondata[i][0])
+    #print(solutiondata[i][0])
 
 x = np.asarray(x,dtype=float)
 x2 = np.array(x2,dtype=float)
@@ -34,7 +37,7 @@ forecast_wind_dir = np.asarray(forecast_wind_dir,dtype=float)
 
 
 # Give data the correct dimensions 
-x, x2, y, forecast,forecast2 = x.reshape(len(x),1), x2.reshape(len(x2),1), y.reshape(len(y), 1), forecast_wind_speed.reshape(len(forecast_wind_speed),1), forecast_wind_dir.reshape(len(forecast_wind_dir),1)
+x, x2, y, forecast, forecast2 = x.reshape(len(x),1), x2.reshape(len(x2),1), y.reshape(len(y), 1), forecast_wind_speed.reshape(len(forecast_wind_speed),1), forecast_wind_dir.reshape(len(forecast_wind_dir),1)
 
 # Create array for mlr
 x = np.hstack([x,x2])
@@ -54,7 +57,7 @@ for i in range(len(prediction)):
 rmse = math.sqrt(sum_errors/len(prediction))
 
 print(rmse)
-
+read.writeToFile("ForecastTemplate2.csv", dates, prediction)
 # plot and show
 plt.plot(range(len(solution)),solution)
 plt.plot(range(len(prediction)),prediction, color='red')
