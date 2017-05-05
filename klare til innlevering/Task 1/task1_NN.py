@@ -1,10 +1,9 @@
 import CsvReader as read
 import numpy as np
 import math
-from numpy import genfromtxt
-from pylab import scatter, show, title, xlabel, ylabel, plot, contour
-from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
+from numpy import genfromtxt
+from sklearn.neural_network import MLPRegressor
 
 weatherdata = read.getCsvAsList('TrainData')
 forcastdata = read.getCsvAsList('WeatherForecastInput')
@@ -26,35 +25,31 @@ for i in range(len(forcastdata)):
     solution.append(solutiondata[i][1])
     dates.append(solutiondata[i][0])
 
-# Create Numpy arrays
+# Create Numpy array
 x = np.asarray(x,dtype=float)
 y = np.asarray(y,dtype=float)
 forcast = np.asarray(forecast,dtype=float)
+solution = np.asarray(solution,dtype=float)
 
 # Give data the correct dimensions 
 x, y, forecast = x.reshape(len(x),1), y.reshape(len(y), 1), forcast.reshape(len(forcast),1)
 
 # Train the Linear Regression Object
-lin_reg= LinearRegression().fit(x,y)
+mlpr= MLPRegressor().fit(x,y.ravel())
 
 # Predict
-prediction = lin_reg.predict(forecast)
+prediction = mlpr.predict(forecast)
 
 # Write to file
-printlist = read.convert(prediction)
-read.writeToFile("ForecastTemplate1-LR.csv", dates, printlist)
+read.writeToFile("ForecastTemplate1-NN.csv", dates, prediction)
 
 # Calculate RMSE
-sum_errors = 0
-for i in range(len(prediction)):
-	sum_errors += math.pow(2, (float(prediction[i])-float(solution[i])))
-
-rmse = math.sqrt(sum_errors/len(prediction))
+rmse = np.sqrt(np.mean((solution-prediction)**2))
 
 print(" ")
-print("Prediction done using Linear Regression")
+print("Prediction done using Neural Network")
 print("RMSE: " + str(rmse))
-print("Results stored in ForecastTemplate1-LR.csv")
+print("Results stored in ForecastTemplate1-NN.csv")
 
 
 # plot and show

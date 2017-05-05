@@ -1,10 +1,9 @@
+from sklearn import neighbors
+from sklearn.neighbors import KNeighborsRegressor
 import CsvReader as read
 import numpy as np
-import math
-from numpy import genfromtxt
-from pylab import scatter, show, title, xlabel, ylabel, plot, contour
-from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
+import math
 
 weatherdata = read.getCsvAsList('TrainData')
 forcastdata = read.getCsvAsList('WeatherForecastInput')
@@ -26,39 +25,37 @@ for i in range(len(forcastdata)):
     solution.append(solutiondata[i][1])
     dates.append(solutiondata[i][0])
 
-# Create Numpy arrays
+# Create numpy arrays
 x = np.asarray(x,dtype=float)
 y = np.asarray(y,dtype=float)
 forcast = np.asarray(forecast,dtype=float)
+solution = np.asarray(solution,dtype=float)
 
 # Give data the correct dimensions 
-x, y, forecast = x.reshape(len(x),1), y.reshape(len(y), 1), forcast.reshape(len(forcast),1)
+x, y, forecast= x.reshape(len(x),1), y.reshape(len(y), 1), forcast.reshape(len(forcast),1)
 
-# Train the Linear Regression Object
-lin_reg= LinearRegression().fit(x,y)
+# Train 
+knnReg = KNeighborsRegressor(10, 'uniform').fit(x,y)
 
 # Predict
-prediction = lin_reg.predict(forecast)
+prediction = knnReg.predict(forecast)
 
 # Write to file
 printlist = read.convert(prediction)
-read.writeToFile("ForecastTemplate1-LR.csv", dates, printlist)
+read.writeToFile("ForecastTemplate1-kNN.csv", dates, printlist)
 
 # Calculate RMSE
-sum_errors = 0
-for i in range(len(prediction)):
-	sum_errors += math.pow(2, (float(prediction[i])-float(solution[i])))
-
-rmse = math.sqrt(sum_errors/len(prediction))
+rmse = np.sqrt(np.mean((solution-prediction)**2))
 
 print(" ")
-print("Prediction done using Linear Regression")
+print("Prediction done using K-Nearest Neighbor")
 print("RMSE: " + str(rmse))
-print("Results stored in ForecastTemplate1-LR.csv")
-
+print("Results stored in ForecastTemplate1-kNN.csv")
 
 # plot and show
 plt.plot(range(len(solution)),solution)
 plt.plot(range(len(prediction)),prediction, color='red')
 plt.show()
+
+
 

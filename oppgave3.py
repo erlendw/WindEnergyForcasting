@@ -28,7 +28,8 @@ forcast = np.asarray(forecast,dtype=float)
 
 # Give data the correct dimensions 
 x, y, forecast = x.reshape(len(x),1), y.reshape(len(y), 1), forcast.reshape(len(forcast),1)
-
+y = x
+y.pop
 # Train the Linear Regression Object
 mlpr= MLPRegressor().fit(x,y)
 
