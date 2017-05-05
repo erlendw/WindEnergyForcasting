@@ -52,6 +52,12 @@ print("RMSE: " + str(rmse))
 print("Results stored in ForecastTemplate1-SVR.csv")
 
 # plot and show
+days = []
+for i in range(1,32):
+	days.append(str(i))
+plt.xticks( np.arange(1,len(prediction)+2,24), days)
+plt.xlabel("Dates")
+plt.ylabel("Power")
 plt.plot(range(len(solution)),solution)
 plt.plot(range(len(prediction)),prediction, color='red')
 plt.show()
