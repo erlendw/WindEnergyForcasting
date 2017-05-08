@@ -35,7 +35,7 @@ solution = np.asarray(solution,dtype=float)
 x, y, forecast= x.reshape(len(x),1), y.reshape(len(y), 1), forcast.reshape(len(forcast),1)
 
 # Train 
-knnReg = KNeighborsRegressor(10, 'uniform').fit(x,y)
+knnReg = KNeighborsRegressor(10000, 'uniform').fit(x,y)
 
 # Predict
 prediction = knnReg.predict(forecast)
