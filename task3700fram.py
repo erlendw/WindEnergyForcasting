@@ -30,10 +30,12 @@ xpred = []
 xpredbest = []
 for i in range(14700,15000):
 	add = []
-
-	for k in range(i-30,i):
+	add2 = []
+	for k in range(i-130,i):
 		add.append(y[k])
 
+	for k in range(i+1,i+3):
+			add2.append(y[k])
 	#add.append(x[i-6])
 	#add.append(x[i-5])
 	#add.append(x[i-4])
@@ -42,12 +44,10 @@ for i in range(14700,15000):
 	#add.append(x[i-1])
 	#add.append(x[i])
 	ny_x.append(add)
-	ny_y.append(y[i+1])
+	ny_y.append(add2)
 
-for i in range(14701,len(y)-1):
+for i in range(14701,15000):
 	xpredbest.append(y[i])
-
-ny_y.pop(len(ny_y)-1)
 
 
 print(len(ny_x))
@@ -63,7 +63,7 @@ x = ny_x
 
 
 
-
+ny_y.pop(len(ny_y)-1)
 xpred = []
 #xpred = [[x[len(x)-6], x[len(x)-5], x[len(x)-4]]]
 xpred = x
@@ -78,7 +78,7 @@ forcast = np.asarray(forecast,dtype=float)
 #x, y, forecast = x.reshape(len(x),1), y.reshape(len(y), 1), forcast.reshape(len(forcast),1)
 print(x.shape)
 print(xpred.shape)
-x = x.reshape(30,len(x))
+x = x.reshape(130,len(x))
 xpred2 = []
 xpred2.append(xpred[len(xpred)-3])
 xpred2.append(xpred[len(xpred)-2])
@@ -87,8 +87,8 @@ xpred2.append(xpred[len(xpred)-1])
 #xpred = np.asarray(xpred,dtype=float)
 print(xpred)
 print(xpred.shape)
-xpred= xpred.reshape(30,len(xpred))
-
+xpred= xpred.reshape(130,len(xpred))
+ny_y = ny_y.reshape(2,len(ny_y))
 print(xpred.shape)
 
 print(x.shape)
@@ -96,7 +96,7 @@ print(xpred)
 #print(ny_y.shape)
 # Train the Linear Regression Object
 #mlpr= MLPRegressor().fit(x,y)
-net = pyrenn.CreateNN([30,10,1])
+net = pyrenn.CreateNN([130,10,2])
 #print(net)
 net = pyrenn.train_LM(x,ny_y,net,verbose=True,k_max=200,E_stop=1e-2)
 
@@ -148,7 +148,7 @@ plt.show()
 print(xpredbest)
 prediction = y2
  #plot and show
-plt.plot(range(len(xpredbest)),xpredbest)
-plt.plot(range(len(prediction)),prediction, color='red')
+#plt.plot(range(len(xpredbest)),xpredbest)
+plt.plot(range(len(prediction)),prediction)
 plt.show()
 

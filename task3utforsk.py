@@ -87,6 +87,7 @@ xpred2.append(xpred[len(xpred)-1])
 #xpred = np.asarray(xpred,dtype=float)
 print(xpred)
 print(xpred.shape)
+xpred = xpred[0:len(xpred)/2]
 xpred= xpred.reshape(30,len(xpred))
 
 print(xpred.shape)
